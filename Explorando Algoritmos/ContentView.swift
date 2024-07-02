@@ -8,14 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
+    let listAlgorithms = ["Ordenação por Bolha",
+                          "Ordenação por Seleção",
+                          "Ordenação por Inserção"]
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            List {
+                Section(header:
+                    ZStack {
+                        Color.blue
+                            .frame(width: 400, height: 35)
+                            .edgesIgnoringSafeArea(.all)
+                        Text("Algoritmos de Ordenação")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                    }
+                ) {
+                    ForEach(listAlgorithms, id: \.self) { algorithm in
+                        NavigationLink(destination: Text(algorithm)) {
+                            Text(algorithm)
+                        }
+                    }
+                }
+            }
+            .listStyle(GroupedListStyle())
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .padding()
     }
 }
 
