@@ -18,7 +18,7 @@ struct ContentView: View {
                 Section(header:
                     ZStack {
                         Color.blue
-                            .frame(width: 400, height: 35)
+                            .frame(width: 700, height: 35)
                             .edgesIgnoringSafeArea(.all)
                         Text("Algoritmos de Ordenação")
                             .foregroundColor(.white)
@@ -26,7 +26,7 @@ struct ContentView: View {
                     }
                 ) {
                     ForEach(listAlgorithms, id: \.self) { algorithm in
-                        NavigationLink(destination: Text(algorithm)) {
+                        NavigationLink(destination: AlgorithmDetailView(algorithmName: algorithm)) {
                             Text(algorithm)
                         }
                     }

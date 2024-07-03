@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		470F0B212C35045E00E7DE2B /* AlgorithmDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470F0B202C35045E00E7DE2B /* AlgorithmDetailView.swift */; };
+		470F0B232C35076C00E7DE2B /* BubbleSortAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470F0B222C35076C00E7DE2B /* BubbleSortAnimationView.swift */; };
 		4794A3322C34AB6B0080514A /* Explorando_AlgoritmosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4794A3312C34AB6B0080514A /* Explorando_AlgoritmosApp.swift */; };
 		4794A3342C34AB6B0080514A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4794A3332C34AB6B0080514A /* ContentView.swift */; };
 		4794A3362C34AB6C0080514A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4794A3352C34AB6C0080514A /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		470F0B202C35045E00E7DE2B /* AlgorithmDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmDetailView.swift; sourceTree = "<group>"; };
+		470F0B222C35076C00E7DE2B /* BubbleSortAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleSortAnimationView.swift; sourceTree = "<group>"; };
 		4794A32E2C34AB6B0080514A /* Explorando Algoritmos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Explorando Algoritmos.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4794A3312C34AB6B0080514A /* Explorando_AlgoritmosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explorando_AlgoritmosApp.swift; sourceTree = "<group>"; };
 		4794A3332C34AB6B0080514A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +58,8 @@
 			children = (
 				4794A3312C34AB6B0080514A /* Explorando_AlgoritmosApp.swift */,
 				4794A3332C34AB6B0080514A /* ContentView.swift */,
+				470F0B202C35045E00E7DE2B /* AlgorithmDetailView.swift */,
+				470F0B222C35076C00E7DE2B /* BubbleSortAnimationView.swift */,
 				4794A3352C34AB6C0080514A /* Assets.xcassets */,
 				4794A3372C34AB6C0080514A /* Explorando_Algoritmos.entitlements */,
 				4794A3382C34AB6C0080514A /* Preview Content */,
@@ -141,6 +147,8 @@
 			files = (
 				4794A3342C34AB6B0080514A /* ContentView.swift in Sources */,
 				4794A3322C34AB6B0080514A /* Explorando_AlgoritmosApp.swift in Sources */,
+				470F0B212C35045E00E7DE2B /* AlgorithmDetailView.swift in Sources */,
+				470F0B232C35076C00E7DE2B /* BubbleSortAnimationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
