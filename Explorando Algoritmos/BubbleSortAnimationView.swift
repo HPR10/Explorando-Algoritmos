@@ -11,6 +11,10 @@ struct BubbleSortAnimationView: View {
     @State private var numbers = [8, 3, 5, 1, 9, 2, 7, 4, 6]
     @State private var isSorting = false
     
+    private let colors: [Color] = [
+        .red, .orange, .yellow, .green, .blue, .purple, .pink, .gray, .brown
+    ]
+    
     var body: some View {
         VStack {
             HStack(spacing: 10) {
@@ -19,8 +23,8 @@ struct BubbleSortAnimationView: View {
                         Text("\(numbers[index])")
                             .foregroundColor(getTextColor())
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 30, height: CGFloat(numbers[index]) * 10)
-                            .foregroundColor(.blue)
+                            .frame(width: 30, height: 100)
+                            .foregroundColor(colors[index % colors.count])
                     }
                 }
             }
@@ -48,7 +52,7 @@ struct BubbleSortAnimationView: View {
         DispatchQueue.global(qos: .userInitiated).async {
             while swapped {
                 swapped = false
-                for i in 1..<n {
+                for i in stride(from: n-1, to: 0, by: -1) {
                     if self.numbers[i-1] > self.numbers[i] {
                         DispatchQueue.main.async {
                             withAnimation {
