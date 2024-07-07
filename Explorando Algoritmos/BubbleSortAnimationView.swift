@@ -29,28 +29,57 @@ struct BubbleSortAnimationView: View {
                     VStack {
                         Text("\(numbers[index])")
                             .foregroundColor(getTextColor())
+                            .offset(y: activeIndices?.first == index || activeIndices?.second == index ? -10 : 0)
+                            .animation(.easeInOut(duration: 0.3).repeatCount(activeIndices != nil ? 3 : 0, autoreverses: true), value: activeIndices)
+                        
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 30, height: 100)
+                            .frame(width: 30, height: CGFloat(numbers[index]) * 10)
                             .foregroundColor(activeIndices?.first == index || activeIndices?.second == index ? .red : colors[index % colors.count])
                             .scaleEffect(activeIndices?.first == index || activeIndices?.second == index ? 1.2 : 1.0)
                             .animation(.easeInOut(duration: 0.5), value: activeIndices)
+                        
+                        if activeIndices?.first == index || activeIndices?.second == index {
+                            Image(systemName: "arrow.down")
+                                .foregroundColor(.blue)
+                                .transition(.scale)
+                                .animation(.easeInOut(duration: 0.5), value: activeIndices)
+                        } else {
+                            Spacer().frame(height: 16)
+                        }
                     }
                 }
             }
             .padding()
             
             HStack(spacing: 20) {
-                Button("Iniciar Ordenação") {
+                Button(action: {
                     isSorting = true
                     bubbleSort()
+                }) {
+                    Text("Iniciar Ordenação")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.2)))
+                        .foregroundColor(getTextColor())
+                        .font(.headline)
                 }
                 .disabled(isSorting)
+                .buttonStyle(PlainButtonStyle())
                 
-                Button("Ordenar Passo a Passo") {
+                Button(action: {
                     stepSort()
+                }) {
+                    Text("Ordenar Passo a Passo")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.2)))
+                        .foregroundColor(getTextColor())
+                        .font(.headline)
                 }
                 .disabled(isSorting)
+                .buttonStyle(PlainButtonStyle())
             }
+            .padding()
         }
         .navigationTitle("Ordenação por Bolha")
     }
