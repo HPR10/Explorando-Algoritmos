@@ -15,42 +15,50 @@ struct ActiveIndices: Equatable {
 struct BubbleSortAnimationView: View {
     @State private var numbers = [8, 3, 5, 1, 9, 2, 7, 4, 6]
     @State private var isSorting = false
-    @State private var stepIndex = 0
     @State private var activeIndices: ActiveIndices? = nil
-    
+    @State private var stepIndex = 0
+    @State private var passIndex = 0
+
     private let colors: [Color] = [
         .red, .orange, .yellow, .green, .blue, .purple, .pink, .gray, .brown
     ]
-    
+
     var body: some View {
         VStack {
-            HStack(spacing: 10) {
-                ForEach(0..<numbers.count, id: \.self) { index in
+            Spacer()
+
+            HStack(alignment: .bottom, spacing: 7) {
+                ForEach(Array(numbers.enumerated()), id: \.offset) { index, number in
                     VStack {
-                        Text("\(numbers[index])")
-                            .foregroundColor(getTextColor())
-                            .offset(y: activeIndices?.first == index || activeIndices?.second == index ? -10 : 0)
-                            .animation(.easeInOut(duration: 0.3).repeatCount(activeIndices != nil ? 3 : 0, autoreverses: true), value: activeIndices)
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 30, height: CGFloat(numbers[index]) * 10)
-                            .foregroundColor(activeIndices?.first == index || activeIndices?.second == index ? .red : colors[index % colors.count])
+                        RoundedRectangle(cornerRadius: 5)
+                            .frame(width: 33, height: max(CGFloat(number) * 10, 25))
+
+                            .foregroundColor(colors[number % colors.count])
+                            .overlay(
+                                Text("\(number)")
+                                    .foregroundColor(.white)
+                                    .font(.system(size:14, weight:.bold))
+                                    .padding(.bottom, 4), alignment: .bottom
+                            )
                             .scaleEffect(activeIndices?.first == index || activeIndices?.second == index ? 1.2 : 1.0)
                             .animation(.easeInOut(duration: 0.5), value: activeIndices)
-                        
+
                         if activeIndices?.first == index || activeIndices?.second == index {
-                            Image(systemName: "arrow.down")
-                                .foregroundColor(.blue)
+                            Color.black
+                                .frame(height: 5)
+                                .padding(.top, 4)
                                 .transition(.scale)
                                 .animation(.easeInOut(duration: 0.5), value: activeIndices)
                         } else {
-                            Spacer().frame(height: 16)
+                            Spacer().frame(height: 9)
                         }
                     }
                 }
             }
             .padding()
-            
+
+           Spacer()
+
             HStack(spacing: 20) {
                 Button(action: {
                     isSorting = true
@@ -65,7 +73,7 @@ struct BubbleSortAnimationView: View {
                 }
                 .disabled(isSorting)
                 .buttonStyle(PlainButtonStyle())
-                
+
                 Button(action: {
                     stepSort()
                 }) {
@@ -83,28 +91,28 @@ struct BubbleSortAnimationView: View {
         }
         .navigationTitle("Ordenação por Bolha")
     }
-    
+
     @Environment(\.colorScheme) var colorScheme
-    
+
     func getTextColor() -> Color {
         return colorScheme == .dark ? .white : .black
     }
-    
+
     func bubbleSort() {
         let n = numbers.count
         var swapped = true
-        
+
         DispatchQueue.global(qos: .userInitiated).async {
             while swapped {
                 swapped = false
-                for i in stride(from: n-1, to: 0, by: -1) {
+                for i in 0..<(n - passIndex - 1) {
                     DispatchQueue.main.async {
-                        self.activeIndices = ActiveIndices(first: i-1, second: i)
+                        self.activeIndices = ActiveIndices(first: i, second: i + 1)
                     }
-                    if self.numbers[i-1] > self.numbers[i] {
+                    if self.numbers[i] > self.numbers[i + 1] {
                         DispatchQueue.main.async {
                             withAnimation(.easeInOut(duration: 0.5)) {
-                                self.numbers.swapAt(i-1, i)
+                                self.numbers.swapAt(i, i + 1)
                             }
                         }
                         swapped = true
@@ -112,6 +120,7 @@ struct BubbleSortAnimationView: View {
                     }
                     usleep(100_000) // Pausa para visualização dos elementos ativos
                 }
+                passIndex += 1
             }
             DispatchQueue.main.async {
                 self.isSorting = false
@@ -119,22 +128,27 @@ struct BubbleSortAnimationView: View {
             }
         }
     }
-    
+
     func stepSort() {
         let n = numbers.count
-        if stepIndex < n - 1 {
-            let currentIndex = n - 1 - stepIndex
-            DispatchQueue.main.async {
-                self.activeIndices = ActiveIndices(first: currentIndex - 1, second: currentIndex)
-            }
-            if numbers[currentIndex - 1] > numbers[currentIndex] {
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    numbers.swapAt(currentIndex - 1, currentIndex)
+        if passIndex < n - 1 {
+            if stepIndex < n - 1 - passIndex {
+                DispatchQueue.main.async {
+                    self.activeIndices = ActiveIndices(first: stepIndex, second: stepIndex + 1)
                 }
+                if numbers[stepIndex] > numbers[stepIndex + 1] {
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        numbers.swapAt(stepIndex, stepIndex + 1)
+                    }
+                }
+                stepIndex += 1
+            } else {
+                stepIndex = 0
+                passIndex += 1
             }
-            stepIndex += 1
         } else {
             stepIndex = 0
+            passIndex = 0
             activeIndices = nil
         }
     }
