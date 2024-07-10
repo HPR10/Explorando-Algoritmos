@@ -27,37 +27,47 @@ struct BubbleSortAnimationView: View {
         VStack {
             Spacer()
 
-            HStack(alignment: .bottom, spacing: 7) {
-                ForEach(Array(numbers.enumerated()), id: \.offset) { index, number in
-                    VStack {
-                        RoundedRectangle(cornerRadius: 5)
-                            .frame(width: 33, height: max(CGFloat(number) * 10, 25))
+            Text("O algoritmo Bubble Sort é um método de ordenação simples que percorre a lista repetidamente, comparando elementos adjacentes e trocando-os se estiverem na ordem errada. Este processo é repetido até que a lista esteja ordenada.")
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding()
 
-                            .foregroundColor(colors[number % colors.count])
-                            .overlay(
-                                Text("\(number)")
-                                    .foregroundColor(.white)
-                                    .font(.system(size:14, weight:.bold))
-                                    .padding(.bottom, 4), alignment: .bottom
-                            )
-                            .scaleEffect(activeIndices?.first == index || activeIndices?.second == index ? 1.2 : 1.0)
-                            .animation(.easeInOut(duration: 0.5), value: activeIndices)
-
-                        if activeIndices?.first == index || activeIndices?.second == index {
-                            Color.black
-                                .frame(height: 5)
-                                .padding(.top, 4)
-                                .transition(.scale)
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(backgroundColor())
+                    .frame(width: 370, height: 200) // Define o tamanho do quadrado
+                
+                HStack(alignment: .bottom, spacing: 7) {
+                    ForEach(Array(numbers.enumerated()), id: \.offset) { index, number in
+                        VStack {
+                            RoundedRectangle(cornerRadius: 5)
+                                .frame(width: 33, height: max(CGFloat(number) * 10, 25))
+                                .foregroundColor(colors[number % colors.count])
+                                .overlay(
+                                    Text("\(number)")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 14, weight: .bold))
+                                        .padding(.bottom, 4), alignment: .bottom
+                                )
+                                .scaleEffect(activeIndices?.first == index || activeIndices?.second == index ? 1.2 : 1.0)
                                 .animation(.easeInOut(duration: 0.5), value: activeIndices)
-                        } else {
-                            Spacer().frame(height: 9)
+
+                            if activeIndices?.first == index || activeIndices?.second == index {
+                                Color.black
+                                    .frame(height: 5)
+                                    .padding(.top, 4)
+                                    .transition(.scale)
+                                    .animation(.easeInOut(duration: 0.5), value: activeIndices)
+                            } else {
+                                Spacer().frame(height: 9)
+                            }
                         }
                     }
                 }
+                .padding()
             }
-            .padding()
 
-           Spacer()
+            Spacer()
 
             HStack(spacing: 20) {
                 Button(action: {
@@ -88,6 +98,8 @@ struct BubbleSortAnimationView: View {
                 .buttonStyle(PlainButtonStyle())
             }
             .padding()
+            
+            Spacer()
         }
         .navigationTitle("Ordenação por Bolha")
     }
@@ -96,6 +108,10 @@ struct BubbleSortAnimationView: View {
 
     func getTextColor() -> Color {
         return colorScheme == .dark ? .white : .black
+    }
+
+    func backgroundColor() -> Color {
+        return colorScheme == .dark ? Color(white: 0.2) : Color(white: 0.9)
     }
 
     func bubbleSort() {
