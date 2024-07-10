@@ -31,8 +31,7 @@ struct AlgorithmDetailView: View {
                       }
                       
                       Spacer()
-                  }
-           .navigationTitle(algorithmName)
+            }
        }
 }
 

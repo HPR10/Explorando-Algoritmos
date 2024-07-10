@@ -1,10 +1,3 @@
-//
-//  BubbleSortAnimationView.swift
-//  Explorando Algoritmos
-//
-//  Created by Hugo Pinheiro  on 03/07/24.
-//
-
 import SwiftUI
 
 struct ActiveIndices: Equatable {
@@ -25,9 +18,7 @@ struct BubbleSortAnimationView: View {
 
     var body: some View {
         VStack {
-            Spacer()
-
-            Text("O algoritmo Bubble Sort é um método de ordenação simples que percorre a lista repetidamente, comparando elementos adjacentes e trocando-os se estiverem na ordem errada. Este processo é repetido até que a lista esteja ordenada.")
+            Text("O algoritmo \"Ordenação por bolha\"(bubble) é um método de ordenação simples que percorre a lista repetidamente, comparando elementos adjacentes e trocando-os se estiverem na ordem errada. Este processo é repetido até que a lista esteja ordenada.")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .padding()
@@ -35,8 +26,8 @@ struct BubbleSortAnimationView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(backgroundColor())
-                    .frame(width: 370, height: 200) // Define o tamanho do quadrado
-                
+                    .frame(width: 450, height: 200) // Define o tamanho do quadrado fixo
+
                 HStack(alignment: .bottom, spacing: 7) {
                     ForEach(Array(numbers.enumerated()), id: \.offset) { index, number in
                         VStack {
@@ -54,17 +45,20 @@ struct BubbleSortAnimationView: View {
 
                             if activeIndices?.first == index || activeIndices?.second == index {
                                 Color.black
-                                    .frame(height: 5)
-                                    .padding(.top, 4)
+                                    .frame(height: 3)
+                                    .padding(.top, 2)
                                     .transition(.scale)
                                     .animation(.easeInOut(duration: 0.5), value: activeIndices)
                             } else {
-                                Spacer().frame(height: 9)
+                                Color.clear
+                                    .frame(height: 3)
+                                    .padding(.top, 2)
                             }
                         }
                     }
                 }
                 .padding()
+                .frame(maxWidth: .infinity) // Para garantir que o HStack use o máximo de largura disponível
             }
 
             Spacer()
@@ -101,7 +95,6 @@ struct BubbleSortAnimationView: View {
             
             Spacer()
         }
-        .navigationTitle("Ordenação por Bolha")
     }
 
     @Environment(\.colorScheme) var colorScheme
