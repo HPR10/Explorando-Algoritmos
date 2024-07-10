@@ -18,7 +18,7 @@ struct BubbleSortAnimationView: View {
 
     var body: some View {
         VStack {
-            Text("O algoritmo \"Ordenação por bolha\"(bubble) é um método de ordenação simples que percorre a lista repetidamente, comparando elementos adjacentes e trocando-os se estiverem na ordem errada. Este processo é repetido até que a lista esteja ordenada.")
+            Text("O algoritmo \"Bubble Sort\" é um método de ordenação simples que percorre a lista repetidamente, comparando elementos adjacentes e trocando-os se estiverem na ordem errada. Este processo é repetido até que a lista esteja ordenada.")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .padding()
@@ -68,11 +68,15 @@ struct BubbleSortAnimationView: View {
                     isSorting = true
                     bubbleSort()
                 }) {
-                    Text("Iniciar Ordenação")
-                        .padding()
+                    HStack {
+                         Image(systemName: "arrowtriangle.right.circle")
+                        Text("ordernar")
+                     }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
                         .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.2)))
-                        .foregroundColor(getTextColor())
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+                        .foregroundColor(.white)
                         .font(.headline)
                 }
                 .disabled(isSorting)
@@ -81,11 +85,16 @@ struct BubbleSortAnimationView: View {
                 Button(action: {
                     stepSort()
                 }) {
-                    Text("Ordenar Passo a Passo")
-                        .padding()
+                    HStack {
+                            Image(systemName: "playpause.circle.fill")
+                            Text("Passo")
+                        }
+
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
                         .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.2)))
-                        .foregroundColor(getTextColor())
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.red))
+                        .foregroundColor(.white)
                         .font(.headline)
                 }
                 .disabled(isSorting)
