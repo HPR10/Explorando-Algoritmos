@@ -26,7 +26,7 @@ struct BubbleSortAnimationView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(backgroundColor())
-                    .frame(width: 450, height: 200) // Define o tamanho do quadrado fixo
+                    .frame(width: 400, height: 200) // Define o tamanho do quadrado fixo
 
                 HStack(alignment: .bottom, spacing: 7) {
                     ForEach(Array(numbers.enumerated()), id: \.offset) { index, number in
