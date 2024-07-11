@@ -11,6 +11,8 @@ struct BubbleSortAnimationView: View {
     @State private var activeIndices: ActiveIndices? = nil
     @State private var stepIndex = 0
     @State private var passIndex = 0
+    @State private var isPaused = false
+    @State private var sortingJob: DispatchWorkItem?
 
     private let colors: [Color] = [
         .red, .orange, .yellow, .green, .blue, .purple, .pink, .gray, .brown
@@ -63,45 +65,79 @@ struct BubbleSortAnimationView: View {
 
             Spacer()
 
-            HStack(spacing: 20) {
-                Button(action: {
-                    isSorting = true
-                    bubbleSort()
-                }) {
-                    HStack {
-                         Image(systemName: "arrowtriangle.right.circle")
-                        Text("ordernar")
-                     }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 20)
-                        .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
-                        .foregroundColor(.white)
-                        .font(.headline)
-                }
-                .disabled(isSorting)
-                .buttonStyle(PlainButtonStyle())
+            GeometryReader { geometry in
+                let buttonWidth = (geometry.size.width - 60) / 3
 
-                Button(action: {
-                    stepSort()
-                }) {
-                    HStack {
-                            Image(systemName: "playpause.circle.fill")
-                            Text("Passo")
+                HStack(spacing: 20) {
+                    Button(action: {
+                        if isSorting {
+                            isPaused.toggle()
+                            if isPaused {
+                                sortingJob?.cancel()
+                                isSorting = false
+                            } else {
+                                isSorting = true
+                                bubbleSort()
+                            }
+                        } else {
+                            isSorting = true
+                            isPaused = false
+                            passIndex = 0
+                            stepIndex = 0
+                            bubbleSort()
                         }
-
+                    }) {
+                        HStack {
+                            Image(systemName: isSorting && !isPaused ? "pause.circle" : "arrowtriangle.right.circle")
+                                .font(.system(size: 25))
+                        }
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
-                        .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.red))
+                        .frame(width: buttonWidth)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(isSorting && !isPaused ? Color.red : Color.blue))
                         .foregroundColor(.white)
                         .font(.headline)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+
+                    Button(action: {
+                        stepSort()
+                    }) {
+                        HStack {
+                            Image(systemName: "playpause.circle.fill")
+                                .font(.system(size: 25))
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .frame(width: buttonWidth)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.orange))
+                        .foregroundColor(.white)
+                        .font(.headline)
+                    }
+                    .disabled(isSorting)
+                    .buttonStyle(PlainButtonStyle())
+
+                    Button(action: {
+                        shuffleNumbers()
+                    }) {
+                        HStack {
+                            Image(systemName: "shuffle")
+                                .font(.system(size: 25))
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .frame(width: buttonWidth)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.green))
+                        .foregroundColor(.white)
+                        .font(.headline)
+                    }
+                    .disabled(isSorting)
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .disabled(isSorting)
-                .buttonStyle(PlainButtonStyle())
+                .padding()
             }
-            .padding()
-            
+            .frame(height: 60) // Define a altura do GeometryReader para garantir que o layout funcione corretamente
+
             Spacer()
         }
     }
@@ -120,10 +156,11 @@ struct BubbleSortAnimationView: View {
         let n = numbers.count
         var swapped = true
 
-        DispatchQueue.global(qos: .userInitiated).async {
-            while swapped {
+        sortingJob = DispatchWorkItem {
+            while swapped && !self.isPaused {
                 swapped = false
-                for i in 0..<(n - passIndex - 1) {
+                for i in 0..<(n - self.passIndex - 1) {
+                    if self.isPaused || self.sortingJob?.isCancelled == true { return }
                     DispatchQueue.main.async {
                         self.activeIndices = ActiveIndices(first: i, second: i + 1)
                     }
@@ -138,12 +175,22 @@ struct BubbleSortAnimationView: View {
                     }
                     usleep(100_000) // Pausa para visualização dos elementos ativos
                 }
-                passIndex += 1
+                self.passIndex += 1
+                if self.passIndex >= n - 1 {
+                    self.isSorting = false
+                    self.isPaused = false
+                    self.activeIndices = nil
+                    return
+                }
             }
             DispatchQueue.main.async {
                 self.isSorting = false
                 self.activeIndices = nil
             }
+        }
+
+        if let sortingJob = sortingJob {
+            DispatchQueue.global(qos: .userInitiated).async(execute: sortingJob)
         }
     }
 
@@ -169,6 +216,13 @@ struct BubbleSortAnimationView: View {
             passIndex = 0
             activeIndices = nil
         }
+    }
+
+    func shuffleNumbers() {
+        numbers.shuffle()
+        activeIndices = nil
+        stepIndex = 0
+        passIndex = 0
     }
 }
 
