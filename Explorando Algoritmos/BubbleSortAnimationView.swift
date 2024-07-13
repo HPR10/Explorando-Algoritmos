@@ -24,6 +24,8 @@ struct BubbleSortAnimationView: View {
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .padding()
+            
+            Spacer()
 
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
@@ -62,7 +64,13 @@ struct BubbleSortAnimationView: View {
                 .padding()
                 .frame(maxWidth: .infinity) // Para garantir que o HStack use o máximo de largura disponível
             }
-
+            
+            Text("Complexidade de Tempo")
+                .font(.system(size: 20))
+            Spacer().frame(height:20)
+            Text("Melhor Caso: Complexidade O(n").superscript("") + Text(")")
+            Text("Pior Caso: Complexidade O(n").superscript("2") + Text(")")
+            Text("Caso Médio: Complexidade O(n").superscript("2") + Text(")")
             Spacer()
 
             GeometryReader { geometry in
