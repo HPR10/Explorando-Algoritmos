@@ -12,8 +12,7 @@ import SwiftUI
 
 extension Text {
     func superscript(_ text: String) -> Text {
-        self + Text(text).baselineOffset(5).font(.system(size:10))
+        self + Text(text).baselineOffset(5).font(.custom("Avenir", size: 20))
     }
 }
-
 

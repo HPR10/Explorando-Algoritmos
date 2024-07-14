@@ -13,6 +13,7 @@ struct BubbleSortAnimationView: View {
     @State private var passIndex = 0
     @State private var isPaused = false
     @State private var sortingJob: DispatchWorkItem?
+    @State private var showComplexityText = false
 
     private let colors: [Color] = [
         .red, .orange, .yellow, .green, .blue, .purple, .pink, .gray, .brown
@@ -20,8 +21,8 @@ struct BubbleSortAnimationView: View {
 
     var body: some View {
         VStack {
-            Text("O algoritmo \"Bubble Sort\" é um método de ordenação simples que percorre a lista repetidamente, comparando elementos adjacentes e trocando-os se estiverem na ordem errada. Este processo é repetido até que a lista esteja ordenada.")
-                .font(.body)
+            Text("O algoritmo \"Bubble Sort\" compara dois elementos adjacentes e os troca de posição se estiverem na ordem errada. Esse processo é repetido até que a lista esteja completamente ordenada.")
+                .font(.custom("Avenir", size: 20))
                 .multilineTextAlignment(.center)
                 .padding()
             
@@ -65,12 +66,17 @@ struct BubbleSortAnimationView: View {
                 .frame(maxWidth: .infinity) // Para garantir que o HStack use o máximo de largura disponível
             }
             
-            Text("Complexidade de Tempo")
-                .font(.system(size: 20))
-            Spacer().frame(height:20)
-            Text("Melhor Caso: Complexidade O(n").superscript("") + Text(")")
-            Text("Pior Caso: Complexidade O(n").superscript("2") + Text(")")
-            Text("Caso Médio: Complexidade O(n").superscript("2") + Text(")")
+            if showComplexityText {
+                VStack {
+                    Text("Complexidade de Tempo")
+                        .font(.custom("Avenir", size: 20))
+                    Spacer().frame(height: 20)
+                    Text("Melhor Caso: Complexidade O(n)").superscript("") + Text(")")
+                    Text("Pior Caso: Complexidade O(n").superscript("2") + Text(")")
+                    Text("Caso Médio: Complexidade O(n").superscript("2") + Text(")")
+                }
+            }
+
             Spacer()
 
             GeometryReader { geometry in
@@ -92,6 +98,7 @@ struct BubbleSortAnimationView: View {
                             isPaused = false
                             passIndex = 0
                             stepIndex = 0
+                            showComplexityText = false
                             bubbleSort()
                         }
                     }) {
@@ -188,12 +195,16 @@ struct BubbleSortAnimationView: View {
                     self.isSorting = false
                     self.isPaused = false
                     self.activeIndices = nil
+                    DispatchQueue.main.async {
+                        self.showComplexityText = true
+                    }
                     return
                 }
             }
             DispatchQueue.main.async {
                 self.isSorting = false
                 self.activeIndices = nil
+                self.showComplexityText = true
             }
         }
 
@@ -223,6 +234,7 @@ struct BubbleSortAnimationView: View {
             stepIndex = 0
             passIndex = 0
             activeIndices = nil
+            showComplexityText = true
         }
     }
 
@@ -231,6 +243,7 @@ struct BubbleSortAnimationView: View {
         activeIndices = nil
         stepIndex = 0
         passIndex = 0
+        showComplexityText = false
     }
 }
 
