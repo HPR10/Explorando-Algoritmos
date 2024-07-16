@@ -8,33 +8,21 @@
 import SwiftUI
 
 struct AlgorithmDetailView: View {
-    var algorithmName: String
+    @ObservedObject var viewModel: AlgorithmDetailViewModel
        
        var body: some View {
            VStack {
-                      Text(algorithmName)
-                          .font(.largeTitle)
-                          .padding()
+               Text(viewModel.algorithmName)
+                   .font(.largeTitle)
+                   .padding()
+               
+               viewModel.getAlgorithmDetailView()
                       
-                      // Conteúdo específico baseado no algoritmo selecionado
-                      if algorithmName == "Ordenação por Bolha" {
-                          BubbleSortAnimationView()
-                          // Adicione mais detalhes específicos aqui
-                      } else if algorithmName == "Ordenação por Seleção" {
-                          Text("Conteúdo específico para Ordenação por Seleção")
-                              .padding()
-                          // Adicione mais detalhes específicos aqui
-                      } else if algorithmName == "Ordenação por Inserção" {
-                          Text("Conteúdo específico para Ordenação por Inserção")
-                              .padding()
-                          // Adicione mais detalhes específicos aqui
-                      }
-                      
-                      Spacer()
+                Spacer()
             }
        }
 }
 
 #Preview {
-    AlgorithmDetailView(algorithmName: "Ordenação por Bolha")
+    AlgorithmDetailView(viewModel: AlgorithmDetailViewModel(algorithmName: "Ordenação por bolha"))
 }

@@ -26,7 +26,7 @@ struct ContentView: View {
                     }
                 ) {
                     ForEach(listAlgorithms, id: \.self) { algorithm in
-                        NavigationLink(destination: AlgorithmDetailView(algorithmName: algorithm)) {
+                        NavigationLink(destination: AlgorithmDetailView(viewModel: AlgorithmDetailViewModel(algorithmName: algorithm))) {
                             Text(algorithm)
                         }
                     }
