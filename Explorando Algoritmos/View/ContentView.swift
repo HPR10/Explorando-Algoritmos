@@ -1,16 +1,13 @@
-//
-//  ContentView.swift
-//  Explorando Algoritmos
-//
-//  Created by Hugo Pinheiro  on 02/07/24.
-//
+// Views/ContentView.swift
 
 import SwiftUI
 
 struct ContentView: View {
-    let listAlgorithms = ["Ordenação por Bolha",
-                          "Ordenação por Seleção",
-                          "Ordenação por Inserção"]
+    let algorithms = [
+        AlgorithmModel(name: "Ordenação por Bolha", description: "Algoritmo Bubble Sort"),
+        AlgorithmModel(name: "Ordenação por Seleção", description: "Algoritmo Selection Sort"),
+        AlgorithmModel(name: "Ordenação por Inserção", description: "Algoritmo Insertion Sort")
+    ]
     
     var body: some View {
         NavigationView {
@@ -25,9 +22,9 @@ struct ContentView: View {
                             .font(.headline)
                     }
                 ) {
-                    ForEach(listAlgorithms, id: \.self) { algorithm in
-                        NavigationLink(destination: AlgorithmDetailView(viewModel: AlgorithmDetailViewModel(algorithmName: algorithm))) {
-                            Text(algorithm)
+                    ForEach(algorithms) { algorithm in
+                        NavigationLink(destination: AlgorithmDetailView(viewModel: AlgorithmDetailViewModel(algorithm: algorithm))) {
+                            Text(algorithm.name)
                         }
                     }
                 }

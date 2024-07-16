@@ -5,19 +5,21 @@
 //  Created by Hugo Pinheiro  on 14/07/24.
 //
 
+
+
 import Foundation
 import SwiftUI
 
 class AlgorithmDetailViewModel: ObservableObject {
     
-    @Published var algorithmName: String
+    @Published var algorithm: AlgorithmModel
     
-    init(algorithmName: String) {
-        self.algorithmName = algorithmName
+    init(algorithm: AlgorithmModel) {
+        self.algorithm = algorithm
     }
     
     func getAlgorithmDetailView() -> AnyView {
-        switch algorithmName {
+        switch algorithm.name {
         case "Ordenação por Bolha":
             return AnyView(BubbleSortAnimationView())
         default:
@@ -25,3 +27,4 @@ class AlgorithmDetailViewModel: ObservableObject {
         }
     }
 }
+
