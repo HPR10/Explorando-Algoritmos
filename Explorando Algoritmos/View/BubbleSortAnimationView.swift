@@ -55,7 +55,7 @@ struct BubbleSortAnimationView: View {
                     Text("Complexidade de Tempo")
                         .avenirFont(size: 20)
                     Spacer().frame(height: 20)
-                    Text("Melhor Caso: Complexidade O(n)").superscript("") + Text(")")
+                    Text("Melhor Caso: Complexidade O(n").superscript("") + Text(")")
                     Text("Pior Caso: Complexidade O(n").superscript("2") + Text(")")
                     Text("Caso Médio: Complexidade O(n").superscript("2") + Text(")")
                 }
